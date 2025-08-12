@@ -19,7 +19,7 @@ const AddStudent = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/faculty/dashboard");
+    navigate("/student/dashboard");
   };
 
   return (
