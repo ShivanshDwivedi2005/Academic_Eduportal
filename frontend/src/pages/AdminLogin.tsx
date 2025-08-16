@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Shield, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -14,10 +15,17 @@ const AdminLogin = () => {
     password: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     // Mock login - in real app, this would be authentication
-    navigate("/admin/dashboard");
+    try{
+      const resp = await axios.post("http://localhost:5000/login",formData);
+      navigate("/admin/dashboard");
+      console.log(resp);
+    }catch(e){
+      console.log("Admin Data not sent to server: ",e);
+    }
+    
   };
 
   return (

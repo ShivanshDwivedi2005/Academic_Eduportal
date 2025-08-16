@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BookOpen, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import axios from 'axios';
 const AddStudent = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -14,12 +14,20 @@ const AddStudent = () => {
     email: "",
     phone :"",
     id:"",
+    branch:"",
     password: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/student/dashboard");
+    try{
+      const resp = await axios.post('http://localhost:5000/add_student',formData);
+      console.log(resp);
+      navigate("/admin/dashboard");
+    }catch(e){
+      console.log('student data not sent to server');
+    }
+    //navigate("/student/dashboard");
   };
 
   return (
@@ -93,6 +101,19 @@ const AddStudent = () => {
                   placeholder="BT20CSE093"
                   value={formData.id}
                   onChange={(e) => setFormData({...formData, id: e.target.value})}
+                  required
+                  className="transition-all duration-300 focus:shadow-soft"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="branch">Branch</Label>
+                <Input
+                  id="branch"
+                  type="branch"
+                  placeholder="CSE"
+                  value={formData.branch}
+                  onChange={(e) => setFormData({...formData, branch: e.target.value})}
                   required
                   className="transition-all duration-300 focus:shadow-soft"
                 />
