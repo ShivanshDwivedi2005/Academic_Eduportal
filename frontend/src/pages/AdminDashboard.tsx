@@ -42,8 +42,12 @@ const AdminDashboard = () => {
     { title: "Add Student", icon: UserCheck, description: "Enroll new student", action: () => {
       navigate('/addstudent');
     } },
-    { title: "System Settings", icon: Settings, description: "Configure platform", action: () => {} },
-    { title: "View Reports", icon: BarChart3, description: "Analytics & insights", action: () => {} }
+    { title: "System Settings", icon: Settings, description: "Configure platform", action: () => {
+      
+    } },
+    { title: "View Reports", icon: BarChart3, description: "Analytics & insights", action: () => {
+      navigate('/reports');
+    } }
   ];
 
   return (

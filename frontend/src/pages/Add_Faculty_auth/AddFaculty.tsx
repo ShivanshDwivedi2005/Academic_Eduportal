@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BookOpen, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const AddFaculty = () => {
   const navigate = useNavigate();
@@ -14,12 +15,21 @@ const AddFaculty = () => {
     email: "",
     phone :"",
     id:"",
-    password: ""
+    password: "",
+    department: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/faculty/dashboard");
+    try{
+      // console.log("not equal");
+      const resp = await axios.post('http://localhost:5000/add_faculty',formData);
+      console.log(resp);
+      navigate("/admin/dashboard");
+    }catch(e){
+      console.log('faculty data not sent to the server');
+    }
+    // navigate("/faculty/dashboard");
   };
 
   return (
@@ -125,7 +135,20 @@ const AddFaculty = () => {
                   </Button>
                 </div>
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="department">Department</Label>
+                <Input
+                  id="department"
+                  type="department"
+                  placeholder="CSE"
+                  value={formData.department}
+                  onChange={(e) => setFormData({...formData, department: e.target.value})}
+                  required
+                  className="transition-all duration-300 focus:shadow-soft"
+                />
+              </div>
 
+              
               <Button type="submit" variant="faculty" className="w-full" size="lg">
                 Register Faculty
               </Button>

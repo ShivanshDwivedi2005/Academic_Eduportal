@@ -14,10 +14,39 @@ const StudentLogin = () => {
     password: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    navigate("/student/dashboard");
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   navigate("/student/dashboard");
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("http://localhost:5000/student/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        studentId: formData.studentId,
+        password: formData.password
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      // ✅ Successful login
+      navigate("/student/dashboard");
+    } else {
+      // ❌ Invalid credentials
+      alert(data.message || "Invalid credentials");
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Something went wrong. Please try again.");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-student/5 to-student/10 flex items-center justify-center p-6">

@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Build outputs
+/frontend/build
+/backend/build
+
+# OS specific
+.DS_Store
+Thumbs.db
