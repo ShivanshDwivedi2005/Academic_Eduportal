@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-// import { FacultyLogin } from "../Add_Faculty_auth/FacultyLogin";
 import { 
   Users, 
   GraduationCap, 
@@ -12,17 +12,30 @@ import {
   LogOut,
   Calendar,
   TrendingUp,
-  UserCheck,
-  AlertCircle
+  UserCheck
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
+  // ✅ State for total students fetched from backend
+  const [studentCount, setStudentCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/student-count") // change port if needed
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Student count fetched:", data);
+        setStudentCount(Number(data));
+      })
+      .catch((err) => {
+        console.error("Error fetching student count:", err);
+      });
+  }, []);
+
   const stats = [
-    { title: "Total Students", value: "1,248", icon: GraduationCap, change: "+12%", color: "student" },
+    { title: "Total Students", value: studentCount !== null ? studentCount.toString() : "Loading...", icon: GraduationCap, change: "+12%", color: "student" },
     { title: "Faculty Members", value: "84", icon: BookOpen, change: "+3%", color: "faculty" },
     { title: "Active Courses", value: "156", icon: Users, change: "+8%", color: "primary" },
     { title: "System Usage", value: "94%", icon: BarChart3, change: "+2%", color: "accent" }
@@ -36,50 +49,35 @@ const AdminDashboard = () => {
   ];
 
   const quickActions = [
-    { title: "Add Faculty", icon: Plus, description: "Create new faculty account", action: () => {
-        navigate('/addfaculty');
-    } },
-    { title: "Add Student", icon: UserCheck, description: "Enroll new student", action: () => {
-      navigate('/addstudent');
-    } },
-    { title: "System Settings", icon: Settings, description: "Configure platform", action: () => {
-      
-    } },
-    { title: "View Reports", icon: BarChart3, description: "Analytics & insights", action: () => {
-      navigate('/reports');
-    } }
+    { title: "Add Faculty", icon: Plus, description: "Create new faculty account", action: () => navigate('/addfaculty') },
+    { title: "Add Student", icon: UserCheck, description: "Enroll new student", action: () => navigate('/addstudent') },
+    { title: "System Settings", icon: Settings, description: "Configure platform", action: () => {} },
+    { title: "View Reports", icon: BarChart3, description: "Analytics & insights", action: () => navigate('/reports') }
   ];
 
   return (
     <div className="min-h-screen bg-background">
-      {"Administration page"}
       <header className="bg-card border-b shadow-soft">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
-              <p className="text-muted-foreground">Welcome back, Administrator</p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">
-                <Settings className="mr-2 h-4 w-4" />
-                Settings
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => navigate("/")}
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Logout
-              </Button>
-            </div>
+        <div className="px-6 py-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
+            <p className="text-muted-foreground">Welcome back, Administrator</p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Button variant="outline" size="sm">
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </Button>
           </div>
         </div>
       </header>
 
       <div className="p-6 space-y-6">
-        {"Records"}
+        {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <Card key={stat.title} className="hover:shadow-medium transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -101,8 +99,8 @@ const AdminDashboard = () => {
           ))}
         </div>
 
+        {/* Quick Actions + Recent Activities */}
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Quick Actions */}
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center">
@@ -113,7 +111,7 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
-                {quickActions.map((action, index) => (
+                {quickActions.map((action) => (
                   <Button
                     key={action.title}
                     variant="outline"
@@ -135,7 +133,6 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Recent Activities */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
@@ -169,7 +166,7 @@ const AdminDashboard = () => {
           </Card>
         </div>
 
-        {/* Management Sections */}
+        {/* Faculty & Student Management */}
         <div className="grid lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
@@ -203,11 +200,13 @@ const AdminDashboard = () => {
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm">Total Students</span>
-                <Badge variant="secondary">1,248</Badge>
+                <Badge variant="secondary">
+                  {studentCount !== null ? studentCount : "Loading..."}
+                </Badge>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Active Enrollment</span>
-                <Badge variant="default">1,205</Badge>
+                <Badge variant="default">{studentCount !== null ? studentCount - 5 : "Loading..."}</Badge>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Pending Actions</span>
