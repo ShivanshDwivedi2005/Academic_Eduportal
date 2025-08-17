@@ -13,9 +13,11 @@ import StudentDashboard from "./pages/StudentDashboard";
 import AddFaculty from "./pages/Add_Faculty_auth/AddFaculty";
 import AddStudent from "./pages/Add_students/AddStudents";
 import NotFound from "./pages/NotFound";
-import ReportsPage from "./pages/Reportspage";
+import ReportsPage from "./pages/ReportsPage";
+import StudentDataFilter from "./pages/StudentDataFilter";
 import { motion } from "framer-motion";
 import FacultyReportsPage from "./pages/FacultyReportsPage";
+import { Router } from "lucide-react";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -37,6 +39,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
           <Route path = "/reports" element={<ReportsPage/>}/>
           <Route path = "faculty-reports" element = {<FacultyReportsPage/>}/>
+          <Route path = "/student-reports" element = {<StudentDataFilter/>}/>
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

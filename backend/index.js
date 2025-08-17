@@ -6,6 +6,8 @@ const mysql = require("mysql2");
 const db = require("./db");
 require("dotenv").config();
 const facultyRoutes = require("./routes/faculty.js");
+const studentsRoutes = require("./routes/students.js");
+const studentcountRoutes = require("./routes/studentcout.js");
 const PASSWORD = process.env.ADMIN_PASSWORD;
 const MAIL = process.env.ADMIN_EMAIL;
 const app = express();
@@ -17,6 +19,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", facultyRoutes);
+app.use("/api",studentsRoutes);
+app.use("/api",studentcountRoutes);
 // ------------------- SIGNUP -------------------
 
 app.post("/login", async (req, res) => {

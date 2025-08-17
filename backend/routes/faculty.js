@@ -13,7 +13,7 @@ router.get("/faculty", (req, res) => {
         console.error("Error fetching faculty:", err);
         return res.status(500).json({ error: "Database error" });
       }
-      console.log("Faculty fetched:", results);
+      //console.log("Faculty fetched:", results);
       res.status(200).json(results); //  send array directly
     }
   );
