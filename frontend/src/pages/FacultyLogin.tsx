@@ -14,9 +14,28 @@ const FacultyLogin = () => {
     password: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/faculty/dashboard");
+    //navigate("/faculty/dashboard");
+    try{
+      const response = await fetch("http://localhost:5000/faculty/login",{
+        method : "POST",
+        headers: {"Content-Type" : "application/json"},
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+      const data = await response.json();
+      if(response.ok && data.success){
+        navigate("/faculty/dashboard");
+      }else{
+        alert(data.message || "Invalid credentials");
+      }
+    } catch(error){
+      console.error("Login error:",error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -47,7 +66,7 @@ const FacultyLogin = () => {
                 <Label htmlFor="email">Faculty ID / Email</Label>
                 <Input
                   id="email"
-                  type="email"
+                  type="text"
                   placeholder="faculty@college.edu"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}

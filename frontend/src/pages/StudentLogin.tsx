@@ -14,11 +14,6 @@ const StudentLogin = () => {
     password: ""
   });
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   navigate("/student/dashboard");
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
@@ -35,10 +30,8 @@ const StudentLogin = () => {
     const data = await response.json();
 
     if (response.ok && data.success) {
-      // ✅ Successful login
       navigate("/student/dashboard");
     } else {
-      // ❌ Invalid credentials
       alert(data.message || "Invalid credentials");
     }
   } catch (error) {
@@ -59,7 +52,7 @@ const StudentLogin = () => {
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Home
         </Button>
-
+        
         <Card className="shadow-strong animate-bounce-in">
           <CardHeader className="text-center pb-8">
             <div className="mx-auto p-4 bg-gradient-student rounded-full mb-4">

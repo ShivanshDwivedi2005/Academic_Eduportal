@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
-
   const academicStats = [
     { title: "Current GPA", value: "3.74", icon: Award, color: "student" },
     { title: "Enrolled Courses", value: "6", icon: BookOpen, color: "primary" },

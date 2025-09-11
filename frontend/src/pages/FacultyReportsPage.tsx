@@ -20,13 +20,13 @@ const FacultyReports = () => {
 useEffect(() => {
   axios.get("http://localhost:5000/api/faculty")
     .then(res => {
-      console.log("API Response:", res.data); // 👀 Check structure here
+      console.log("API Response:", res.data); 
       if (Array.isArray(res.data)) {
-        setFaculties(res.data); // Already array
+        setFaculties(res.data); 
       } else if (res.data.faculties) {
-        setFaculties(res.data.faculties); // If wrapped inside {faculties: [...]}
+        setFaculties(res.data.faculties); 
       } else {
-        setFaculties([]); // Fallback
+        setFaculties([]); 
       }
     })
     .catch(err => {

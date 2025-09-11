@@ -15,15 +15,16 @@ import {
   UserCheck
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { set } from "date-fns";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
-  // ✅ State for total students fetched from backend
+  //  State for total students fetched from backend
   const [studentCount, setStudentCount] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/student-count") // change port if needed
+    fetch("http://localhost:5000/api/student-count")
       .then((res) => res.json())
       .then((data) => {
         console.log("Student count fetched:", data);
@@ -34,9 +35,21 @@ const AdminDashboard = () => {
       });
   }, []);
 
+  const [facultyCount, setFacultyCount] = useState<number | null>(null);
+  useEffect(()=>{
+    fetch("http://localhost:5000/api/faculty-count")
+    .then((res)=>res.json())
+    .then((data)=>{
+      console.log("faculty count fetched: ",data);
+      setFacultyCount(Number(data));
+    })
+    .catch((err)=>{
+      console.error("Error fetching faculty conunt: ",err);
+    });
+  },[]);
   const stats = [
     { title: "Total Students", value: studentCount !== null ? studentCount.toString() : "Loading...", icon: GraduationCap, change: "+12%", color: "student" },
-    { title: "Faculty Members", value: "84", icon: BookOpen, change: "+3%", color: "faculty" },
+    { title: "Faculty Members", value: facultyCount !==null ? facultyCount.toString() : "Loading...", icon: BookOpen, change: "+3%", color: "faculty" },
     { title: "Active Courses", value: "156", icon: Users, change: "+8%", color: "primary" },
     { title: "System Usage", value: "94%", icon: BarChart3, change: "+2%", color: "accent" }
   ];
@@ -51,7 +64,7 @@ const AdminDashboard = () => {
   const quickActions = [
     { title: "Add Faculty", icon: Plus, description: "Create new faculty account", action: () => navigate('/addfaculty') },
     { title: "Add Student", icon: UserCheck, description: "Enroll new student", action: () => navigate('/addstudent') },
-    { title: "System Settings", icon: Settings, description: "Configure platform", action: () => {} },
+    { title: "Schedule Settings", icon: Settings, description: "Schedule Timetable", action: () => navigate('/schedule-settings') },
     { title: "View Reports", icon: BarChart3, description: "Analytics & insights", action: () => navigate('/reports') }
   ];
 

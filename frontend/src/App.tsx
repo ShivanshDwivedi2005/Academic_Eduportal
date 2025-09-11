@@ -15,8 +15,10 @@ import AddStudent from "./pages/Add_students/AddStudents";
 import NotFound from "./pages/NotFound";
 import ReportsPage from "./pages/ReportsPage";
 import StudentDataFilter from "./pages/StudentDataFilter";
+import ScheduleSettings from "./pages/ScheduleSettings";
 import { motion } from "framer-motion";
 import FacultyReportsPage from "./pages/FacultyReportsPage";
+import TimetablePage from "./pages/Timetable";z
 import { Router } from "lucide-react";
 const queryClient = new QueryClient();
 
@@ -40,6 +42,9 @@ const App = () => (
           <Route path = "/reports" element={<ReportsPage/>}/>
           <Route path = "faculty-reports" element = {<FacultyReportsPage/>}/>
           <Route path = "/student-reports" element = {<StudentDataFilter/>}/>
+          <Route path="/schedule-settings" element = {<ScheduleSettings/>}/>
+          <Route path="/timetable" element = {<TimetablePage/>} />
+          <Route path="/timetable/:batch/:branch/:section" element={<TimetablePage />}/>
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
