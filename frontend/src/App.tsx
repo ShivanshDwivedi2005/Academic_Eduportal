@@ -18,7 +18,7 @@ import StudentDataFilter from "./pages/StudentDataFilter";
 import ScheduleSettings from "./pages/ScheduleSettings";
 import { motion } from "framer-motion";
 import FacultyReportsPage from "./pages/FacultyReportsPage";
-import TimetablePage from "./pages/Timetable";z
+import TimetablePage from "./pages/Timetable";
 import { Router } from "lucide-react";
 const queryClient = new QueryClient();
 
