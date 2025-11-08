@@ -136,6 +136,8 @@ app.post("/faculty/login", (req, res) => {
     // Require at least one of facultyId or email
     if ((!facultyId && !email) || !password) {
         return res.status(400).json({ message: "Faculty ID or Email and password are required" });
+    }else{
+        console.log("password is incorrect ");
     }
 
     // Choose identifier dynamically
