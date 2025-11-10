@@ -28,7 +28,7 @@ const FacultyLogin = () => {
       });
       const data = await response.json();
       if(response.ok && data.success){
-        navigate("/faculty/dashboard");
+        navigate(`/faculty/dashboard/${data.faculty.id}`);
       }else{
         alert(data.message || "Invalid credentials");
       }

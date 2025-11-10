@@ -30,7 +30,7 @@ const StudentLogin = () => {
     const data = await response.json();
 
     if (response.ok && data.success) {
-      navigate("/student/dashboard");
+      navigate(`/student/dashboard/${data.student.id}`);
     } else {
       alert(data.message || "Invalid credentials");
     }

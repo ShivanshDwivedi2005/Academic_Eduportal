@@ -87,11 +87,8 @@ app.post("/student/login", (req, res) => {
 
     if (!studentId || !password) {
         return res.status(400).json({ message: "Student ID/Email and password are required" });
-    }else{
-        console.log(password);
     }
 
-    // Search by student_id or student_email
     const sql = `
         SELECT * FROM students 
         WHERE student_id = ? OR student_email = ?
@@ -109,11 +106,16 @@ app.post("/student/login", (req, res) => {
 
         const student = results[0];
 
-        // Compare entered password with hashed password in DB
-        // const isMatch = await bcrypt.compare(password, student.student_password);
-        if (password === student.student_password) {
+        try {
+            // ✅ Correct way to compare hashed passwords
+            const isMatch = await bcrypt.compare(password, student.student_password);
+            
+            if (!isMatch) {
+                return res.status(401).json({ message: "Invalid credentials" });
+            }
+
             console.log("Password matched!");
-        return res.json({
+            return res.json({
                 success: true,
                 message: "Login successful",
                 student: {
@@ -122,13 +124,13 @@ app.post("/student/login", (req, res) => {
                     email: student.student_email
                 }
             });
-        } else {
-            console.log("Invalid password!");
-            return res.status(401).json({ message: "Invalid credentials" });
+        } catch (error) {
+            console.error("Password comparison error:", error);
+            return res.status(500).json({ message: "Internal server error" });
         }
-
     });
 });
+
 
 app.post("/faculty/login", (req, res) => {
     const { facultyId, email, password } = req.body;
