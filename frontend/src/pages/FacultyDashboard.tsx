@@ -38,6 +38,7 @@ const FacultyDashboard = () => {
         // Get courses for faculty
         const resCourses = await fetch(`http://localhost:5000/api/faculty/${fac_id}/courses`);
         const dataCourses = await resCourses.json();
+        console.log(dataCourses);
         if (dataCourses.success) setCourses(dataCourses.courses);
 
       } catch (err) {
@@ -181,9 +182,14 @@ const FacultyDashboard = () => {
                       >
                         0 Pending Grades {/* hardcoded for now */}
                       </Badge>
-                      <Button size="sm" variant="faculty">
+                      <Button 
+                          size="sm" 
+                          variant="faculty"
+                          onClick={() => navigate(`/faculty/${fac_id}/manage/${cls.subject_id}/${cls.batch}/${cls.section}`)}
+                      >
                         Manage
                       </Button>
+
                     </div>
                   </div>
                 </div>

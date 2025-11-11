@@ -55,21 +55,19 @@ router.get("/faculty/:fac_id/courses", (req, res) => {
 
   const query = `
     SELECT 
-      s.subject_id, 
-      c.course_name,
-      s.batch, 
-      s.section, 
-      s.day_name, 
-      s.time_slot,
-      COALESCE(COUNT(sa.student_id), 0) AS total_students
-    FROM schedule s
-    LEFT JOIN courses c ON s.subject_id = c.course_id
-    LEFT JOIN student_acad sa 
-      ON sa.course_id = s.subject_id
-      AND sa.student_id IS NOT NULL
-    WHERE s.fac_id = ?
-    GROUP BY s.subject_id, c.course_name, s.batch, s.section, s.day_name, s.time_slot
-    ORDER BY s.day_name, s.time_slot
+  s.subject_id, 
+  c.course_name,
+  s.batch, 
+  s.section, 
+  s.day_name, 
+  s.time_slot,
+  COUNT(DISTINCT sa.student_id) AS total_students
+FROM schedule s
+LEFT JOIN courses c ON s.subject_id = c.course_id
+LEFT JOIN student_acad sa ON sa.course_id = s.subject_id
+WHERE s.fac_id = ?
+GROUP BY s.subject_id, c.course_name, s.batch, s.section, s.day_name, s.time_slot
+ORDER BY s.day_name, s.time_slot;
   `;
 
   db.query(query, [fac_id], (err, results) => {

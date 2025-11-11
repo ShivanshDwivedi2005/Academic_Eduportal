@@ -20,6 +20,8 @@ import { motion } from "framer-motion";
 import FacultyReportsPage from "./pages/FacultyReportsPage";
 import TimetablePage from "./pages/Timetable";
 import { Router } from "lucide-react";
+import ManageClass from "./pages/ManageClass";
+import RegisterSubjects from "./pages/RegisterSubjects";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -45,6 +47,8 @@ const App = () => (
           <Route path="/schedule-settings" element = {<ScheduleSettings/>}/>
           <Route path="/timetable" element = {<TimetablePage/>} />
           <Route path="/timetable/:batch/:branch/:section" element={<TimetablePage />}/>
+          <Route path="/faculty/:fac_id/manage/:subject_id/:batch/:section" element={<ManageClass />} />
+          <Route path="/student/:id/register" element={<RegisterSubjects />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

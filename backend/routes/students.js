@@ -53,4 +53,39 @@ router.get("/student/:id", (req, res) => {
   });
 });
 
+// GET /api/courses/allowed/:sem/:branch
+router.get("/courses/allowed/:sem/:branch", (req, res) => {
+  const { sem, branch } = req.params;
+
+  const sql = `
+    SELECT * FROM courses
+    WHERE (allowed_sem1 = ? OR allowed_sem2 = ?)
+      AND (allowed_branch1 = ? OR allowed_branch2 = ?)
+  `;
+
+  db.query(sql, [sem, sem, branch, branch], (err, results) => {
+    if (err) return res.status(500).json({ success: false, error: err });
+
+    return res.json({ success: true, courses: results });
+  });
+});
+
+// POST /api/student/register-subject
+router.post("/student/register-subject", (req, res) => {
+  const { student_id, course_id, st_semester } = req.body;
+
+  const sql = `
+    INSERT INTO student_acad 
+      (student_id, course_id, st_semester)
+    VALUES (?, ?, ?)
+    ON DUPLICATE KEY UPDATE st_semester = VALUES(st_semester)
+  `;
+
+  db.query(sql, [student_id, course_id, st_semester], (err) => {
+    if (err) return res.status(500).json({ success: false, error: err });
+    return res.json({ success: true, message: "Subject registered successfully" });
+  });
+});
+
+
 module.exports = router;

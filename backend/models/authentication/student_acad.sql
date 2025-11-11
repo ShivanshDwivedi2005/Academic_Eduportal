@@ -10,13 +10,13 @@
 
 CREATE TABLE IF NOT EXISTS student_acad (
     student_id VARCHAR(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    course_id VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    st_semester INT,
-    midsem_marks FLOAT,
-    endsem_marks FLOAT,
-    TA FLOAT,
-    lab FLOAT,
-    st_grades VARCHAR(5),
+    course_id VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    st_semester INT default 0,
+    midsem_marks FLOAT default 0,
+    endsem_marks FLOAT default 0,
+    TA FLOAT default 0,
+    lab FLOAT default 0,
+    st_grades VARCHAR(5) default 'NA',
     PRIMARY KEY (student_id, course_id),
     FOREIGN KEY (student_id) REFERENCES students(student_id)
         ON DELETE CASCADE ON UPDATE CASCADE,

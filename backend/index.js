@@ -13,7 +13,8 @@ const scheduleRoutes = require("./routes/schedule.js");
 const PASSWORD = process.env.ADMIN_PASSWORD;
 const MAIL = process.env.ADMIN_EMAIL;
 const app = express();
-
+const courseRoutes = require("./routes/courses");
+const manageclass = require("./routes/manageclass.js");
 app.use(cors({
     origin: 'http://localhost:8080',  
     credentials: true
@@ -25,6 +26,8 @@ app.use("/api",studentsRoutes);
 app.use("/api",studentcountRoutes);
 app.use("/api",facultyCountRoutes);
 app.use("/api",scheduleRoutes);
+app.use("/api",manageclass);
+app.use("/api",courseRoutes)
 // ------------------- SIGNUP -------------------
 
 app.post("/login", async (req, res) => {
