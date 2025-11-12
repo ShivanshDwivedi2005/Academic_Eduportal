@@ -46,7 +46,6 @@ const StudentDashboard = () => {
         if (data.success && Array.isArray(data.studentData) && data.studentData.length > 0) {
           const rows = data.studentData;
 
-          // Extract base student info from the first object
           setStudentInfo({
             student_id: rows[0].student_id,
             student_name: rows[0].student_name,
@@ -54,7 +53,6 @@ const StudentDashboard = () => {
             student_branch: rows[0].student_branch,
           });
 
-          // Courses = entire array
           setCourses(rows);
         } else {
           console.error("Invalid studentData format:", data);
@@ -83,27 +81,34 @@ const StudentDashboard = () => {
       </div>
     );
 
+  // ✅ Updated Grade-to-Points mapping for A, B, C, etc.
   const gradeToPoints = (grade: string) => {
     switch ((grade || "").toUpperCase()) {
       case "AA": return 10;
-      case "AB": return 9;
-      case "BB": return 8;
-      case "BC": return 7;
-      case "CC": return 6;
-      case "CD": return 5;
-      case "DD": return 4;
+      case "A": return 9;
+      case "AB": return 8;
+      case "B": return 7;
+      case "BC": return 6;
+      case "C": return 5;
+      case "CD": return 4;
+      case "D": return 3;
+      case "F": return 0;
       default: return 0;
     }
   };
 
-  const gpa =
-    courses.length > 0
-      ? courses.reduce((sum, c) => sum + gradeToPoints(c.st_grades || "NA"), 0) /
-        courses.length
+  // ✅ Weighted GPA calculation
+  const totalCredits = courses.reduce((sum, c) => sum + (c.credits || 0), 0);
+  const weightedGPA =
+    totalCredits > 0
+      ? courses.reduce(
+          (sum, c) => sum + gradeToPoints(c.st_grades || "NA") * (c.credits || 0),
+          0
+        ) / totalCredits
       : 0;
 
   const academicStats = [
-    { title: "Current GPA", value: gpa.toFixed(2), icon: Award },
+    { title: "Current GPA", value: weightedGPA.toFixed(2), icon: Award },
     { title: "Enrolled Courses", value: courses.length.toString(), icon: BookOpen },
     { title: "Year", value: getYearFromBT(studentInfo.student_id), icon: Calendar },
     {
@@ -232,7 +237,7 @@ const StudentDashboard = () => {
                           variant={
                             (c.st_grades || "NA").toUpperCase() === "AA"
                               ? "default"
-                              : (c.st_grades || "NA").toUpperCase() === "AB"
+                              : (c.st_grades || "NA").toUpperCase() === "A"
                               ? "secondary"
                               : "outline"
                           }

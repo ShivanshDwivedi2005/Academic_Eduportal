@@ -29,15 +29,19 @@ const RegisterSubjects = () => {
 
   useEffect(() => {
     const fetchStudent = async () => {
-      const res = await fetch(`http://localhost:5000/api/student/${id}`);
-      const data = await res.json();
+      try {
+        const res = await fetch(`http://localhost:5000/api/student/${id}`);
+        const data = await res.json();
 
-      if (data.success) {
-        const student = data.studentData;
-        setStudentInfo(student);
+        if (data.success && Array.isArray(data.studentData) && data.studentData.length > 0) {
+          const student = data.studentData[0]; // ✅ fix
+          setStudentInfo(student);
 
-        const year = parseInt(student.student_id.slice(2, 4));
-        setSemOptions(getSemOptions(year));
+          const year = parseInt(student.student_id.slice(2, 4));
+          setSemOptions(getSemOptions(year));
+        }
+      } catch (err) {
+        console.error("Error fetching student:", err);
       }
     };
 
@@ -48,6 +52,7 @@ const RegisterSubjects = () => {
     const semester = parseInt(sem);
     setSelectedSem(semester);
 
+    if (!studentInfo) return;
     const branch = getBranch(studentInfo.student_id);
 
     const res = await fetch(
@@ -74,7 +79,7 @@ const RegisterSubjects = () => {
     const data = await res.json();
     if (data.success) {
       alert("Registered successfully!");
-      navigate(`/student/${id}`);
+      navigate(`/student/dashboard/${id}`);
     }
   };
 
@@ -87,10 +92,8 @@ const RegisterSubjects = () => {
         <CardContent>
           <div className="mb-4">
             <label>Select Semester:</label>
-            <Select onValueChange={handleSemChange}>
-              <SelectTrigger className="w-48 mt-2">
-                Select
-              </SelectTrigger>
+            <Select onValueChange={handleSemChange} disabled={!studentInfo}>
+              <SelectTrigger className="w-48 mt-2">Select</SelectTrigger>
               <SelectContent>
                 {semOptions.map((s) => (
                   <SelectItem key={s} value={s.toString()}>
@@ -112,9 +115,7 @@ const RegisterSubjects = () => {
                 <p className="text-sm text-gray-600">{c.course_id}</p>
                 <p className="text-sm text-gray-600">Credits: {c.credits}</p>
               </div>
-              <Button onClick={() => registerSubject(c.course_id)}>
-                Register
-              </Button>
+              <Button onClick={() => registerSubject(c.course_id)}>Register</Button>
             </div>
           ))}
         </CardContent>

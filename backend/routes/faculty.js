@@ -54,8 +54,8 @@ router.get("/faculty/:fac_id/courses", (req, res) => {
   const { fac_id } = req.params;
 
   const query = `
-    SELECT 
-  s.subject_id, 
+  SELECT 
+  s.subject_id,   
   c.course_name,
   s.batch, 
   s.section, 

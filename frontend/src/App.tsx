@@ -22,6 +22,8 @@ import TimetablePage from "./pages/Timetable";
 import { Router } from "lucide-react";
 import ManageClass from "./pages/ManageClass";
 import RegisterSubjects from "./pages/RegisterSubjects";
+import ManageStudents from "./pages/ManageStudents";
+import ManageFaculty from "./pages/ManageFaculty";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -49,6 +51,9 @@ const App = () => (
           <Route path="/timetable/:batch/:branch/:section" element={<TimetablePage />}/>
           <Route path="/faculty/:fac_id/manage/:subject_id/:batch/:section" element={<ManageClass />} />
           <Route path="/student/:id/register" element={<RegisterSubjects />} />
+          <Route path="/manage-students" element={<ManageStudents />} />
+          <Route path="/manage-faculty" element={<ManageFaculty />} />
+
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

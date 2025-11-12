@@ -28,7 +28,7 @@ app.use("/api",facultyCountRoutes);
 app.use("/api",scheduleRoutes);
 app.use("/api",manageclass);
 app.use("/api",courseRoutes)
-// ------------------- SIGNUP -------------------
+// ------------------- ADMIN LOGIN -------------------
 
 app.post("/login", async (req, res) => {
     try {

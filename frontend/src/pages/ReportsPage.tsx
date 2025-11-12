@@ -24,7 +24,7 @@ const ReportsPage = () => {
       title: "Schedule", 
       description: "Check and manage academic schedules and timetables", 
       icon: Calendar, 
-      action: () => navigate("/schedule") 
+      action: () => navigate("/schedule-settings") 
     }
   ];
 
